@@ -41,7 +41,7 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
     const { id: taskId } = req.params;
-    await task.findByIdAndDelete(taskId);
+    await Task.findByIdAndDelete(taskId);
     res.status(StatusCodes.OK).json({ msg: "Task deleted successfully!" });
 };
 

@@ -4,7 +4,8 @@
     "description": "A basic task management application with models, view, and controllers.",
     "main": "app.js",
     "scripts": {
-        "test": "npm run dev"
+        "dev": "nodemon app.js",
+        "start": "node app.js"
     },
     "repository": {
         "type": "git",

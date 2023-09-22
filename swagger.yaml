@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info:
+    title: Task Management API
+    contact: {}
+    version: "2.0.0"
+servers:
+    - url: http://localhost:8080/api/v1
+      variables: {}
+paths:
+    /auth/register:
+        post:
+            tags:
+                - Authentication System
+            summary: Register
+            description: Register your account
+            operationId: Register
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/RegisterRequest"
+                                - example:
+                                      name: Felix Ogundipe
+                                      email: gbemilekeogundipe@gmail.com
+                                      password: password
+                        example:
+                            name: Felix Ogundipe
+                            email: gbemilekeogundipe@gmail.com
+                            password: password
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+    /auth/login:
+        post:
+            tags:
+                - Authentication System
+            summary: Login
+            description: Sign in to the app
+            operationId: Login
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/LoginRequest"
+                                - example:
+                                      email: gbemilekeogundipe@gmail.com
+                                      password: password
+                        example:
+                            email: gbemilekeogundipe@gmail.com
+                            password: password
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+                    content:
+                        text/plain:
+                            schema:
+                                type: object
+            deprecated: false
+    /task:
+        get:
+            tags:
+                - Tasks Management CRUD functionalities
+            summary: Get all tasks
+            description: Get a lists of all your tasks
+            operationId: Getalltasks
+            parameters: []
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+        post:
+            tags:
+                - Tasks Management CRUD functionalities
+            summary: Create task
+            description: Create a new task
+            operationId: Createtask
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/CreatetaskRequest"
+                                - example:
+                                      task: Get up
+                        example:
+                            task: Get up
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+    /task/650c4ea9fa3dd2fbf8b87d91:
+        get:
+            tags:
+                - Tasks Management CRUD functionalities
+            summary: Get single task
+            description: Get a single task using the task's id
+            operationId: Getsingletask
+            parameters: []
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+        patch:
+            tags:
+                - Tasks Management CRUD functionalities
+            summary: Update task
+            description: update a single task using the task's id
+            operationId: Updatetask
+            parameters: []
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/UpdatetaskRequest"
+                                - example:
+                                      task: Lorem wetin ???
+                        example:
+                            task: Lorem wetin ???
+                required: true
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+        delete:
+            tags:
+                - Tasks Management CRUD functionalities
+            summary: Delete task
+            description: Delete a single task using the task's id
+            operationId: Deletetask
+            parameters: []
+            responses:
+                "200":
+                    description: ""
+                    headers: {}
+            deprecated: false
+components:
+    schemas:
+        RegisterRequest:
+            title: RegisterRequest
+            required:
+                - name
+                - email
+                - password
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+            example:
+                name: Felix Ogundipe
+                email: gbemilekeogundipe@gmail.com
+                password: password
+        LoginRequest:
+            title: LoginRequest
+            required:
+                - email
+                - password
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+            example:
+                email: gbemilekeogundipe@gmail.com
+                password: password
+        CreatetaskRequest:
+            title: CreatetaskRequest
+            required:
+                - task
+            type: object
+            properties:
+                task:
+                    type: string
+            example:
+                task: Get up
+        UpdatetaskRequest:
+            title: UpdatetaskRequest
+            required:
+                - task
+            type: object
+            properties:
+                task:
+                    type: string
+            example:
+                task: Lorem wetin ???
+    securitySchemes:
+        bearer:
+            type: http
+            scheme: bearer
+security:
+    - bearer: []
+tags:
+    - name: Authentication System
+    - name: Tasks Management CRUD functionalities
