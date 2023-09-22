@@ -104,14 +104,21 @@ paths:
                     description: ""
                     headers: {}
             deprecated: false
-    /task/650c4ea9fa3dd2fbf8b87d91:
+    /task/{id}:
         get:
             tags:
                 - Tasks Management CRUD functionalities
             summary: Get single task
             description: Get a single task using the task's id
             operationId: Getsingletask
-            parameters: []
+            parameters:
+                - name: id
+                  in: path
+                  description: ""
+                  required: true
+                  style: simple
+                  schema:
+                      type: string
             responses:
                 "200":
                     description: ""
@@ -123,19 +130,17 @@ paths:
             summary: Update task
             description: update a single task using the task's id
             operationId: Updatetask
-            parameters: []
-            requestBody:
-                description: ""
-                content:
-                    application/json:
-                        schema:
-                            allOf:
-                                - $ref: "#/components/schemas/UpdatetaskRequest"
-                                - example:
-                                      task: Lorem wetin ???
-                        example:
-                            task: Lorem wetin ???
-                required: true
+            parameters:
+                - name: id
+                  in: path
+                  description: ""
+                  required: true
+                  style: simple
+                  schema:
+                      allOf:
+                          - $ref: "#/components/schemas/UpdatetaskRequest"
+                          - example:
+                                task: Lorem wetin ???
             responses:
                 "200":
                     description: ""
@@ -147,7 +152,14 @@ paths:
             summary: Delete task
             description: Delete a single task using the task's id
             operationId: Deletetask
-            parameters: []
+            parameters:
+                - name: id
+                  in: path
+                  description: ""
+                  required: true
+                  style: simple
+                  schema:
+                      type: string
             responses:
                 "200":
                     description: ""
