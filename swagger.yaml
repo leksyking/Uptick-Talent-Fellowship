@@ -137,10 +137,19 @@ paths:
                   required: true
                   style: simple
                   schema:
-                      allOf:
-                          - $ref: "#/components/schemas/UpdatetaskRequest"
-                          - example:
-                                task: Lorem wetin ???
+                      type: string
+            requestBody:
+                description: ""
+                content:
+                    application/json:
+                        schema:
+                            allOf:
+                                - $ref: "#/components/schemas/UpdatetaskRequest"
+                                - example:
+                                      task: Lorem wetin ???
+                        example:
+                            task: Lorem wetin ???
+                required: true
             responses:
                 "200":
                     description: ""
