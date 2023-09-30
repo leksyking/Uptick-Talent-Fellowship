@@ -21,9 +21,9 @@ const botName = "Chat App";
 //Run when client connects
 io.on("connection", async (socket) => {
         //handle join room
-        await socket.on("joinRoom", async ({ username, room }) => {
+        socket.on("joinRoom", async ({ username, room }) => {
                 const user = await userJoin(socket.id, username, room);
-                console.log(user);
+
                 socket.join(user.room);
 
                 //emits to the client making the connection

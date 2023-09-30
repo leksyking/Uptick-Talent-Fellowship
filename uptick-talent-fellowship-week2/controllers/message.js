@@ -11,7 +11,7 @@ const formatMessage = (username, text) => {
 
 // join user to chat
 const userJoin = async (id, username, room) => {
-        let user = await User.findOne({ username });
+        let user = await User.findOne({ username, room });
         if (user) return user;
         user = await User.create({ socketId: id, username, room });
         return user;
@@ -19,8 +19,8 @@ const userJoin = async (id, username, room) => {
 
 //get current user
 const getCurrentUser = async (id) => {
-        const users = await User.findOne({ socketId: id });
-        return users;
+        const user = await User.findOne({ socketId: id });
+        return user;
 };
 
 //user leaves chat
