@@ -87,7 +87,7 @@ const port = process.env.PORT || 3000;
 
 (async () => {
         try {
-                await connectDB("mongodb://0.0.0.0:27017/chatman");
+                await connectDB(process.env.MONGO_URI);
                 console.log("Successfully connected to the database");
                 server.listen(port);
                 console.log(`Server started successfully on port ${port}`);
