@@ -62,7 +62,7 @@ io.on("connection", async (socket) => {
         });
 
         //Runs when client disconnects
-        socket.on("disconnect", async () => {
+        socket.on("disconnect", async (msg) => {
                 const user = await userLeave(socket.id);
                 if (user) {
                         //to all clients in the room
