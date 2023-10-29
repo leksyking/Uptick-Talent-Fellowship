@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+        app:
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+                ports:
+                        - "3000:3000"
+                depends_on:
+                        - postgres
+                        - mongo
+                links:
+                        - postgres:postgres
+                        - mongo:mongo
+                environment:
+                        POSTGRES_HOST: postgres
+                        POSTGRES_PORT: 5432
+                        POSTGRES_USER: yourusername
+                        POSTGRES_PASSWORD: yourpassword
+                        POSTGRES_DB: yourdb
+                        MONGODB_URI: mongodb://mongo:27017/yourdb
+
+        postgres:
+                image: postgres
+                environment:
+                        POSTGRES_USER: yourusername
+                        POSTGRES_PASSWORD: yourpassword
+                        POSTGRES_DB: yourdb
+                ports:
+                        - "5432:5432"
+                volumes:
+                        - postgres_data:/var/lib/postgresql/data
+
+        mongo:
+                image: mongo
+                ports:
+                        - "27017:27017"
+
+volumes:
+        postgres_data:
