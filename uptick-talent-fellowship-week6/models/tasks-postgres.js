@@ -1,14 +1,17 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("yourdb", "yourusername", "yourpassword", {
-        host: "postgres",
-        dialect: "postgres",
-});
+const { sequelize } = require("../database/connectDB");
 
-const Data = sequelize.define("data", {
-        value: {
+const Task = sequelize.define("task", {
+        id: {
+                type: Sequelize.INTEGER,
+                autoIncrement: true,
+                allowNull: false,
+                primaryKey: true,
+        },
+        task: {
                 type: Sequelize.STRING,
         },
 });
 
-module.exports = Data;
+module.exports = Task;
