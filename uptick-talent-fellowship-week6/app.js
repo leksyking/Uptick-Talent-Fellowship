@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 
 //middlewares and routes
-const { connectDB, sequelize } = require("./database/connectDB");
+const { ConnectDb, sequelize } = require("./database/connectDB");
 const taskRoute = require("./routes/tasks");
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const notFoundMiddleware = require("./middlewares/notFound");
@@ -23,7 +23,7 @@ const port = process.env.PORT || 5000;
 
 (async () => {
         try {
-                await connectDB(process.env.MONGO_URI);
+                await ConnectDb(process.env.MONGO_URI);
                 console.log("Successfully connected to the mongodb database");
                 await sequelize.sync();
                 console.log(
