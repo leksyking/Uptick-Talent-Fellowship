@@ -1,15 +1,13 @@
-name: 🚀 Test and Deploy app on push
+name: 🚀 Test and Deploy Week7's app on push
 
 on:
         push:
                 branches:
                         - main
 
-env:
-        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
 jobs:
         build:
+                name: Deploy app
                 runs-on: ubuntu-latest
                 steps:
                         - name: 🚚 Get latest code
@@ -30,14 +28,13 @@ jobs:
                         - name: 🔨 Install Dependencies
                           if: steps.npm-cache.outputs.cache-hit != 'true'
                           run: |
-                                  npm install
+                                  cd uptick-talent-fellowship-week7 && npm install
                                   git reset --hard
 
                         - name: Run tests
                           run: |
-                                  npm run test
+                                  cd uptick-talent-fellowship-week7 && npm run test
 
-                        - name: 🚀 Deploy to Fly
                         - uses: actions/checkout@v2
                         - uses: superfly/flyctl-actions/setup-flyctl@master
                         - run: flyctl deploy --remote-only
