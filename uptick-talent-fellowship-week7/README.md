@@ -1,3 +1,3 @@
-# uptick-task-week6
+# uptick-task-week7
 
-Set up a normalized database (any of your choice) and a NoSQL (any of your choice) using docker. You can set up a sample app (in any language and/or framework of your choice) to connect to your 2 databases and create a sample API that synchronizes writing to both databases. Tip: you can choose to utilize your application from weeks 2-3.
+Add automated tests to your application from Week 6, Setup a CI/CD pipeline using GitHub that runs your tests and ensures it works before automatically deploying to your server. What to submit? - the public GitHub repo of your project with your CI/CD integrations, files, and whatever else you set up.

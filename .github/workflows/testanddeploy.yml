@@ -5,41 +5,46 @@ on:
                 branches:
                         - main
 
-env:
-        TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-
 jobs:
         build:
                 name: Deploy app
                 runs-on: ubuntu-latest
+
                 steps:
                         - name: 🚚 Get latest code
-                          uses: actions/checkout@v3
+                          uses: actions/checkout@v2
 
                         - name: Use Node.js 16
-                          uses: actions/setup-node@v3
+                          uses: actions/setup-node@v2
                           with:
                                   node-version: "16"
 
+                        - name: 🔨 Install Dependencies
+                          run: |
+                                  cd uptick-talent-fellowship-week7
+                                  npm install
+                          env:
+                                  CI: true
+
                         - name: Cache npm dependencies
-                          uses: actions/cache@v3
+                          uses: actions/cache@v2
                           id: cache-node-modules
                           with:
-                                  path: "**/node_modules"
-                                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-                        - name: 🔨 Install Dependencies
-                          if: steps.npm-cache.outputs.cache-hit != 'true'
-                          run: |
-                                  cd uptick-talent-fellowship-week7 && npm install
-                                  git reset --hard
+                                  path: uptick-talent-fellowship-week7/node_modules
+                                  key: ${{ runner.os }}-node-${{ hashFiles('uptick-talent-fellowship-week7/package-lock.json') }}
 
                         - name: Run tests
                           run: |
-                                  cd uptick-talent-fellowship-week7 && npm run test
+                                  cd uptick-talent-fellowship-week7
+                                  npm test
+                          env:
+                                  CI: true
+                                  TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
 
-                        - uses: actions/checkout@v3
+                        - uses: actions/checkout@v2
                         - uses: superfly/flyctl-actions/setup-flyctl@master
-                        - run: flyctl deploy --remote-only
+
+                        - name: Deploy with Fly
+                          run: flyctl deploy --remote-only
                           env:
                                   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
