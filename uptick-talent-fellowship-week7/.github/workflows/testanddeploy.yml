@@ -1,0 +1,45 @@
+name: 🚀 Test and Deploy app on push
+
+on:
+        push:
+                branches:
+                        - main
+
+env:
+        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+jobs:
+        build:
+                runs-on: ubuntu-latest
+                steps:
+                        - name: 🚚 Get latest code
+                          uses: actions/checkout@v3
+
+                        - name: Use Node.js 16
+                          uses: actions/setup-node@v3
+                          with:
+                                  node-version: "16"
+
+                        - name: Cache npm dependencies
+                          uses: actions/cache@v3
+                          id: cache-node-modules
+                          with:
+                                  path: "**/node_modules"
+                                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+                        - name: 🔨 Install Dependencies
+                          if: steps.npm-cache.outputs.cache-hit != 'true'
+                          run: |
+                                  npm install
+                                  git reset --hard
+
+                        - name: Run tests
+                          run: |
+                                  npm run test
+
+                        - name: 🚀 Deploy to Fly
+                        - uses: actions/checkout@v2
+                        - uses: superfly/flyctl-actions/setup-flyctl@master
+                        - run: flyctl deploy --remote-only
+                          env:
+                                  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
