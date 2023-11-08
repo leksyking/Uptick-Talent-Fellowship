@@ -21,7 +21,7 @@ app.use(notFoundMiddleware);
 
 const port = process.env.PORT || 5000;
 
-(async () => {
+const server = async () => {
         try {
                 await ConnectDb(process.env.MONGO_URI);
                 console.log("Successfully connected to the mongodb database");
@@ -34,4 +34,7 @@ const port = process.env.PORT || 5000;
         } catch (error) {
                 console.log(error);
         }
-})();
+};
+server();
+
+module.exports = server;
