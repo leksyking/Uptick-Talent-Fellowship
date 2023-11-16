@@ -23,7 +23,7 @@ const port = process.env.PORT || 5000;
 
 const server = async () => {
         try {
-                await ConnectDb(process.env.MONGO_URI);
+                await ConnectDb(process.env.MONGO_URI_TEST);
                 console.log("Successfully connected to the mongodb database");
                 await sequelize.sync();
                 console.log(

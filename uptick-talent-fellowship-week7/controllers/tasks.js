@@ -14,9 +14,9 @@ const createTask = async (req, res) => {
 };
 
 const getAllTasks = async (req, res) => {
-        const mongoTasks = await TaskMongo.find();
+        const mongoTasks = await TaskMongo.find({});
         const postgresTasks = await TaskPostgres.findAll();
-        if (!mongoTasks || !postgresTasks) {
+        if (!mongoTasks) {
                 throw new NotFoundError("Tasks do not exist.");
         }
         res.status(StatusCodes.OK).json({
@@ -27,34 +27,53 @@ const getAllTasks = async (req, res) => {
 
 const getSingleTask = async (req, res) => {
         const { id: taskId } = req.params;
-        const postgresTask = await TaskPostgres.findByPk(taskId);
-        const mongoTask = await TaskMongo.findById(taskId);
-
-        if (!postgresTask || !mongoTask) {
+        let task;
+        if (isNaN(taskId)) {
+                task = await TaskMongo.findById(taskId);
+        } else {
+                task = await TaskPostgres.findByPk(taskId);
+        }
+        if (!task) {
                 throw new NotFoundError("Task doesn't exist.");
         }
-        res.status(StatusCodes.OK).json({ postgresTask, mongoTask });
+        res.status(StatusCodes.OK).json({ task });
 };
 
 const updateTask = async (req, res) => {
         const { id: taskId } = req.params;
-        const mongoTask = await TaskMongo.findByIdAndUpdate(taskId, req.body, {
-                new: true,
-                runValidators: true,
-        });
-        TaskPostgres.update(req.body, {
-                where: { id: taskId },
-        });
-        if (!mongoTask) {
+        const { task } = req.body;
+        let fTask;
+        if (isNaN(taskId)) {
+                fTask = await TaskMongo.findById(taskId);
+        } else {
+                fTask = await TaskPostgres.findByPk(taskId);
+        }
+        await TaskMongo.findOneAndUpdate({ task: fTask.task }, { task });
+        await TaskPostgres.update(
+                { task },
+                {
+                        where: { task: fTask.task },
+                }
+        );
+        if (!fTask) {
                 throw new NotFoundError("Task doesn't exist.");
         }
-        res.status(StatusCodes.OK).json({ mongoTask });
+        res.status(StatusCodes.OK).json({ msg: "Task updated successfully!" });
 };
 
 const deleteTask = async (req, res) => {
         const { id: taskId } = req.params;
-        await TaskMongo.findByIdAndDelete(taskId);
-        await TaskPostgres.destroy({ where: { id: taskId } });
+        let fTask;
+        if (isNaN(taskId)) {
+                fTask = await TaskMongo.findById(taskId);
+        } else {
+                fTask = await TaskPostgres.findByPk(taskId);
+        }
+        await TaskMongo.findOneAndDelete({ task: fTask.task });
+        await TaskPostgres.destroy({ where: { task: fTask.task } });
+        if (!fTask) {
+                throw new NotFoundError("Task doesn't exist.");
+        }
         res.status(StatusCodes.OK).json({ msg: "Task deleted successfully!" });
 };
 
